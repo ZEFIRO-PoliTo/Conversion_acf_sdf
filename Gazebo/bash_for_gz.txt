@@ -1,0 +1,49 @@
+~/.gz/sim/models/zefiro_vtol/
+~/.gz/sim/models/zefiro_vtol/model.sdf
+
+export GZ_SIM_RESOURCE_PATH=$HOME/.gz/sim/models --> Prima di ogni simulazione
+export LIBGL_ALWAYS_SOFTWARE=1 --> Non so come dare i permessi GPU a Gazebo
+gz sim -v 4 ~/zefiro_world.sdf
+gz sim -v 1 ~/zefiro_world.sdf 2>&1 | tee ~/zefiro_full.log
+gz sim -v 1 ~/zefiro_world.sdf --render-engine ogre 2>&1 | tee ~/zefiro_full.log
+
+#=== Simulazione ===
+gz sim -v 4 ~/zefiro_world.sdf --> Riavvia la simulazione
+
+
+#=== Sensori ===
+gz topic -l | grep zefiro
+gz topic -e -t /zefiro/imu --> dovrebbe far vedere i dati in tempo reale della GUI
+gz topic -e -t /zefiro/gps --> Idem
+
+#=== Motori ===
+gz topic -l | grep motors --> Controlla i topic dei motori
+gz topic -t /zefiro/motors -m gz.msgs.Double -p "data: [0.4, 0.4, 0.4, 0.4]"
+--> Piccolo Test
+
+
+
+# 1. Dice a Gazebo dove cercare la cartella "zefiro_vtol"
+export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:~/.gz/sim/models
+
+# 2. Forza il rendering software (se sei su WSL)
+export LIBGL_ALWAYS_SOFTWARE=1
+
+# 3. Lancia la simulazione
+gz sim -v 4 ~/zefiro_world.sdf
+===========================================================================================
+
+<mesh>
+          	<uri>model://zefiro_vtol/meshes/ala2412X.obj</uri>
+          </mesh>
+
+
+<mesh>
+      		<uri>model://zefiro_vtol/meshes/impennaggio_orizzX.obj</uri>
+    	  </mesh>
+
+
+<mesh>
+      		<uri>model://zefiro_vtol/meshes/impennaggio_vertX.obj</uri>
+    	  </mesh>
+

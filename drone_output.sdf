@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="drone_converted">
+    <static>false</static>
+    <link name="base_link">
+      <inertial>
+        <mass>0.0000</mass>
+        <inertia>
+          <ixx>0.1</ixx>
+          <iyy>0.1</iyy>
+          <izz>0.1</izz>
+          <ixy>0.0</ixy>
+          <ixz>0.0</ixz>
+          <iyz>0.0</iyz>
+        </inertia>
+      </inertial>
+      <visual name="fuselage_visual">
+        <geometry>
+          <box>
+            <size>0.5 0.5 0.2</size>
+          </box>
+        </geometry>
+      </visual>
+      <collision name="gear_0_collision">
+        <pose>0.4572 -0.0000 -0.0610 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.0335</radius>
+          </sphere>
+        </geometry>
+        <!-- Gear 0 Data: K=1522.76 N/m, Damp=10.43 -->
+      </collision>
+      <collision name="gear_1_collision">
+        <pose>-0.0457 -0.0610 0.0305 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.0335</radius>
+          </sphere>
+        </geometry>
+        <!-- Gear 1 Data: K=1522.76 N/m, Damp=10.43 -->
+      </collision>
+      <collision name="gear_2_collision">
+        <pose>-0.0457 0.0610 0.0305 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.0335</radius>
+          </sphere>
+        </geometry>
+        <!-- Gear 2 Data: K=1522.76 N/m, Damp=10.43 -->
+      </collision>
+    </link>
+  </model>
+</sdf>
