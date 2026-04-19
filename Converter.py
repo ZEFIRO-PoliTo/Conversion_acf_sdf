@@ -161,7 +161,7 @@ class AcfToSdfConverter:
     </link>
 
     <joint name="rotor_{i}_joint" type="revolute">
-      <parent>base_link</parent>
+      <parent>fuselage</parent>
       <child>rotor_{i}</child>
       <axis>
         <xyz>0 0 1</xyz>
@@ -390,14 +390,26 @@ class AcfToSdfConverter:
       <collision name="col_part_{idx}">
         <pose>{gz_x:.3f} {gz_y:.3f} {gz_z:.3f} 0 0 0</pose>
         <geometry><box><size>{dim_x:.3f} {dim_y:.3f} {dim_z:.3f}</size></box></geometry>
-      </collision>
-      <visual name="vis_part_{idx}_debug">
-        <pose>{gz_x:.3f} {gz_y:.3f} {gz_z:.3f} 0 0 0</pose>
-        <geometry><box><size>{dim_x:.3f} {dim_y:.3f} {dim_z:.3f}</size></box></geometry>
-        <material><ambient>0.8 0.8 0.8 0.3</ambient><diffuse>0.8 0.8 0.8 0.3</diffuse></material>
-      </visual>"""
-        
+      </collision>"""
+              
         return xml_output
+
+    def generate_visual_mesh(self):
+        """Inserisce la mesh 3D reale della fusoliera"""
+        return """
+      <visual name="fuselage_visual">
+        <pose>0 0 0 0 1.57 0</pose>
+        <geometry>
+          <mesh>
+            <uri>model://zefiro_vtol_converted/meshes/fusoliera5.obj</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.7 0.7 0.7 1</ambient>
+          <diffuse>0.7 0.7 0.7 1</diffuse>
+        </material>
+      </visual>"""
 
 # --- BLOCCO DI TEST ---
 if __name__ == "__main__":
@@ -422,11 +434,17 @@ if __name__ == "__main__":
 
             # 2. Generazione Componenti
 
+            out.write("    <link name='fuselage'>\n")
             out.write(converter.generate_inertial_xml() or "")
             out.write(converter.generate_fuselage_collisions() or "")
-            #out.write(converter.generate_engines_xml() or "")
-            #out.write(converter.generate_wings_xml() or "")
-            #out.write(converter.generate_gear_xml() or "")
+            out.write(converter.generate_visual_mesh() or "")
+            out.write("    </link>\n")
+
+            out.write(converter.generate_engines_xml() or "")
+
+            out.write(converter.generate_wings_xml() or "")
+
+            out.write(converter.generate_gear_xml() or "")
 
             # 3. Chiusura SDF
             out.write("\n  </model>\n</sdf>")
